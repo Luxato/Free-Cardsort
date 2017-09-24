@@ -1,225 +1,315 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Custom Cardsort</title>
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-	<link rel="stylesheet" href="https://bootswatch.com/flatly/bootstrap.min.css">
-	<style>
-		#gallery { float: left; width: 65%; min-height: 12em; }
-		.gallery.custom-state-active { background: #eee; }
-		.gallery li { float: left; width: 96px; padding: 0.4em; margin: 0 0.4em 0.4em 0; text-align: center; }
-		.gallery li h5 { margin: 0 0 0.4em; cursor: move; }
-		.gallery li a { float: right; }
-		.gallery li a.ui-icon-zoomin { float: left; }
-		.gallery li img { width: 100%; cursor: move; }
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cardsort</title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://bootswatch.com/flatly/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .legit-cat h5.ui-widget-header {
+            background: #fff;
+            color: #000;
+        }
+        .ui-helper-reset {
+            padding: 3px 3px 0 3px;
+            display: inline-block;
+            width: 100%;
+        }
+        .category .ui-widget-content {
+            background: #fff !important;
+            margin: 3px 0;
+        }
+        .category {
+            background: none;
+        }
+        .create-new h4{
+            color: gray;
+        }
+        .legit-cat .ui-widget-header {
+            color: #fff;
+            background: #333;
+        }
+        h4 {
+            padding: 4px 0 4px 7px;
+        }
+        .category .ui-widget-content, .category li h5 {
+            display: inline-block !important;
+            float: left !important;
+        }
+        .category li h5 {
+            border: none;
+        }
+        .category .ui-widget-content {
+            border: 1px solid lightgray;
+            background: #E9E9E9;
+        }
 
-		#trash {height:200px; padding: 1%;
-			z-index: -5;}
-		#trash h4 { line-height: 16px; margin: 0 0 0.4em; }
-		#trash h4 .ui-icon { float: left; }
-		#trash .gallery h5 { display: none; }
-		#trash2 {height:200px; padding: 1%; }
-		#trash2 h4 { line-height: 16px; margin: 0 0 0.4em; }
-		#trash2 h4 .ui-icon { float: left; }
-		#trash2 .gallery h5 { display: none; }
-		.gallery li {
-			z-index: 999999;
-		}
-	</style>
-	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-	<script>
-        $( function() {
+        .gallery.custom-state-active {
+            background: #eee;
+        }
 
-            // There's the gallery and the trash
-            var $gallery = $( "#gallery" ),
-                $trash = $( "#trash" );
-            $trash2 = $( "#trash2" );
+        .ui-widget-content {
+            border: none;
+        }
 
-            // Let the gallery items be draggable
-            $( "li", $gallery ).draggable({
-                cancel: "a.ui-icon", // clicking an icon won't initiate dragging
-                revert: "invalid", // when not dropped, the item will revert back to its initial position
-                containment: "document",
-                helper: "clone",
-                cursor: "move"
-            });
+        .gallery li {
+            width: 100%;
+            text-align: center;
+        }
 
-            // Let the trash be droppable, accepting the gallery items
-            $trash.droppable({
-                accept: "#gallery > li",
-                classes: {
-                    "ui-droppable-active": "ui-state-highlight"
-                },
-                drop: function( event, ui ) {
-                    deleteImage( ui.draggable );
-                }
-            });
+        .gallery li h5 {
+            margin: 0 0 0.4em;
+            cursor: move;
+        }
 
-            $trash2.droppable({
-                accept: "#gallery > li",
-                classes: {
-                    "ui-droppable-active": "ui-state-highlight"
-                },
-                drop: function( event, ui ) {
-                    deleteImage2( ui.draggable );
-                }
-            });
+        .gallery li a {
+            float: right;
+        }
 
-            // Let the gallery be droppable as well, accepting items from the trash
-            $gallery.droppable({
-                accept: "#trash li, #trash2 li",
-                classes: {
-                    "ui-droppable-active": "custom-state-active"
-                },
-                drop: function( event, ui ) {
-                    recycleImage( ui.draggable );
-                }
-            });
+        .gallery li a.ui-icon-zoomin {
+            float: left;
+        }
 
-            // Image deletion function
-            var recycle_icon = "<a href='link/to/recycle/script/when/we/have/js/off' title='Recycle this image' class='ui-icon ui-icon-refresh'>Recycle image</a>";
-            function deleteImage( $item ) {
-                $item.fadeOut(function() {
-                    var $list = $( "ul", $trash ).length ?
-                        $( "ul", $trash ) :
-                        $( "<ul class='gallery ui-helper-reset'/>" ).appendTo( $trash );
+        .gallery li img {
+            width: 100%;
+            cursor: move;
+        }
 
-                    $item.find( "a.ui-icon-trash" ).remove();
-                    $item.append( recycle_icon ).appendTo( $list ).fadeIn(function() {
-                        $item
-                            .animate({ width: "48px" })
-                            .find( "img" )
-                            .animate({ height: "36px" });
-                    });
-                });
-            }
+        #trash {
+            height: 200px;
+            z-index: -5;
+        }
 
-            function deleteImage2( $item ) {
-                $item.fadeOut(function() {
-                    var $list = $( "ul", $trash2 ).length ?
-                        $( "ul", $trash2 ) :
-                        $( "<ul class='gallery ui-helper-reset'/>" ).appendTo( $trash2 );
+        #trash h4 {
+            line-height: 16px;
+            margin: 0 0 0.4em;
+        }
 
-                    $item.find( "a.ui-icon-trash" ).remove();
-                    $item.append( recycle_icon ).appendTo( $list ).fadeIn(function() {
-                        $item
-                            .animate({ width: "48px" })
-                            .find( "img" )
-                            .animate({ height: "36px" });
-                    });
-                });
-            }
+        #trash h4 .ui-icon {
+            float: left;
+        }
 
-            // Image recycle function
-            var trash_icon = "<a href='link/to/trash/script/when/we/have/js/off' title='Delete this image' class='ui-icon ui-icon-trash'>Delete image</a>";
-            function recycleImage( $item ) {
-                $item.fadeOut(function() {
-                    $item
-                        .find( "a.ui-icon-refresh" )
-                        .remove()
+        /*#trash .gallery h5 {
+            display: none;
+        }*/
+
+        #trash2 {
+            height: 200px;
+            padding: 1%;
+        }
+
+        #trash2 h4 {
+            line-height: 16px;
+            margin: 0 0 0.4em;
+        }
+
+        #trash2 h4 .ui-icon {
+            float: left;
+        }
+
+        #trash2 .gallery h5 {
+            display: none;
+        }
+
+        .gallery li {
+            z-index: 999999;
+        }
+        .ui-widget-header {
+            font-weight: 400;
+        }
+        #gallery .ui-widget-header {
+            background: #fff;
+            padding: 4px;
+        }
+        .ui-state-highlight {
+            background: #ffeacd !important;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            function reload() {
+                var oriVal;
+                $(".category").on('click', 'h4', function () {
+                    oriVal = $(this).text();
+                    $(this).text("");
+                    $("<input style='width: 100%;color: gray;' type='text'>")
+                        .appendTo(this)
+                        .focus()
                         .end()
-                        .css( "width", "96px")
-                        .append( trash_icon )
-                        .find( "img" )
-                        .css( "height", "72px" )
-                        .end()
-                        .appendTo( $gallery )
-                        .fadeIn();
-                });
-            }
-
-            // Image preview function, demonstrating the ui.dialog used as a modal window
-            function viewLargerImage( $link ) {
-                var src = $link.attr( "href" ),
-                    title = $link.siblings( "img" ).attr( "alt" ),
-                    $modal = $( "img[src$='" + src + "']" );
-
-                if ( $modal.length ) {
-                    $modal.dialog( "open" );
-                } else {
-                    var img = $( "<img alt='" + title + "' width='384' height='288' style='display: none; padding: 8px;' />" )
-                        .attr( "src", src ).appendTo( "body" );
-                    setTimeout(function() {
-                        img.dialog({
-                            title: title,
-                            width: 400,
-                            modal: true
+                        .on('blur keyup', function (e) {
+                            if (e.type == 'blur' || e.keyCode == '13') {
+                                var $this = $(this);
+                                $this.parent().text($this.val() || oriVal);
+                                $this.remove();
+                            }
                         });
-                    }, 1 );
+                });
+                $("#category").on('focusout', function () {
+                    var $this = $(this);
+                    $this.parent().text($this.val() || oriVal);
+                    $this.remove(); // Don't just hide, remove the element.
+                });
+
+                // There's the gallery and the trash
+                var $gallery = $("#gallery"),
+                $trash2 = $(".category");
+
+                // Let the gallery items be draggable
+                $("li", $gallery).draggable({
+                    start: function () {
+                        console.log('zacinam tahat');
+                    },
+                    cancel: "a.ui-icon", // clicking an icon won't initiate dragging
+                    revert: "invalid", // when not dropped, the item will revert back to its initial position
+                    containment: "document",
+                    helper: "clone",
+                    cursor: "move"
+                });
+
+                $trash2.droppable({
+                    accept: "#gallery > li",
+                    classes: {
+                        "ui-droppable-active": "ui-state-highlight"
+                    },
+                    drop: function (event, ui) {
+                        console.log($(this).hasClass('.legit-cat'));
+                        deleteImage2(ui.draggable, $(this));
+                        if ($(this).hasClass('create-new')) {
+                            change_to_normal_state($(this));
+                        }
+                    }
+                });
+
+                // Accepting items from the trash.
+                $gallery.droppable({
+                    greedy: true,
+                    accept: "#trash li, .category li",
+                    classes: {
+                        "ui-droppable-active": "custom-state-active"
+                    },
+                    drop: function (event, ui) {
+                        //recycleImage(ui.draggable);
+                    }
+                });
+
+                // Image deletion function
+                var recycle_icon = "<a href='link/to/recycle/script/when/we/have/js/off' title='Recycle this image'><i class='fa fa-trash' aria-hidden='true'></i></a>";
+
+                function deleteImage2($item, $container) {
+                    $item.fadeOut(function () {
+                        var $list = $("ul", $container).length ?
+                            $("ul", $container) :
+                            $("<ul class='gallery ui-helper-reset'/>").appendTo($container);
+                        $item.find("a.ui-icon-trash").remove();
+                        $item.append(recycle_icon).appendTo($list).fadeIn('fast',function () {
+
+                        });
+                    });
                 }
+
+                // Image recycle function
+                var trash_icon = "<a href='link/to/trash/script/when/we/have/js/off' title='Delete this image' class='ui-icon ui-icon-trash'>Delete image</a>";
+
+                function recycleImage($item) {
+                    $item.fadeOut(function () {
+                        $item
+                            .find("a.ui-icon-refresh")
+                            .remove()
+                            .end()
+                            .append(trash_icon)
+                            .end()
+                            .appendTo($gallery)
+                            .fadeIn();
+                    });
+                }
+
+                // Resolve the icons behavior with event delegation
+                $("ul.gallery > li").on("click", function (event) {
+                    var $item = $(this),
+                        $target = $(event.target);
+                    if ($target.is("a.ui-icon-trash")) {
+                        deleteImage($item);
+                    } else if ($target.is("a.ui-icon-zoomin")) {
+                        viewLargerImage($target);
+                    } else if ($target.is("a.ui-icon-refresh")) {
+                        recycleImage($item);
+                    }
+
+                    return false;
+                });
             }
 
-            // Resolve the icons behavior with event delegation
-            $( "ul.gallery > li" ).on( "click", function( event ) {
-                var $item = $( this ),
-                    $target = $( event.target );
+            function change_to_normal_state($item) {
+                var title = $item.parent().find('h4').parent();
+                title.removeClass('create-new');
+                title.addClass('legit-cat');
+                title.css('opacity','1');
+                $item.parent().find('.temporary').parent().remove();
+                $item.parent().find('h4').replaceWith('<h4 style="margin: 0; border: 0; padding-right: 7px;" class="ui-widget-header">Sample category <i style="color: #da1111; margin-right: 5px;" class="fa fa-times pull-right" aria-hidden="true"></i>');
+                $('#main').append('<div class="col-md-3">\n' +
+                    '                    <div style="border: 1px solid #c0c0c0; opacity: 0.8;" class="category create-new ui-widget-content ui-state-default">\n' +
+                    '                        <h4 style="margin: 0; border: 0; padding-right: 7px;" class="ui-widget-header">Double-click to edit group name</h4>\n' +
+                    '                        <div style="color: gray;font-size: 12px; text-align: center;">\n' +
+                    '                            <div class="temporary"><i class="fa fa-arrows" aria-hidden="true"></i></div>\n' +
+                    '                            Drag items here to create new group</div>\n' +
+                    '                    </div>\n' +
+                    '                </div>');
+                reload();
+            }
 
-                if ( $target.is( "a.ui-icon-trash" ) ) {
-                    deleteImage( $item );
-                } else if ( $target.is( "a.ui-icon-zoomin" ) ) {
-                    viewLargerImage( $target );
-                } else if ( $target.is( "a.ui-icon-refresh" ) ) {
-                    recycleImage( $item );
+            $.getJSON('cards.json',function(data){
+                //alert(JSON.stringify(data));
+                var gallery = $('#gallery');
+                for (index in data.cards) {
+                    gallery.append('<li id="'+index+'" class="ui-widget-content ui-corner-tr">\n' +
+                        '                        <h5 class="ui-widget-header"><i style="font-size: 11px; position: relative; top: -2px;" class="fa fa-arrows" aria-hidden="true"></i> '+data.cards[index].en+'</h5>\n' +
+                        '                        <a style="display: none;" href="link/to/trash/script/when/we/have/js/off"\n' +
+                        '                           title="Delete this image"\n' +
+                        '                           class="ui-icon ui-icon-trash">Delete image</a>\n' +
+                        '                    </li>');
                 }
-
-                return false;
+                reload();
             });
-        } );
-	</script>
+        });
+    </script>
 </head>
 <body>
 
 <div class="ui-widget ui-helper-clearfix">
 
-	<div class="container">
-		<div class="row">
-			<ul id="gallery" class="gallery ui-helper-reset ui-helper-clearfix">
-				<li class="ui-widget-content ui-corner-tr">
-					<h5 class="ui-widget-header">High Tatras</h5>
-					<img src="images/high_tatras_min.jpg" alt="The peaks of High Tatras" width="96" height="72">
-					<a href="images/high_tatras.jpg" title="View larger image" class="ui-icon ui-icon-zoomin">View larger</a>
-					<a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a>
-				</li>
-				<li class="ui-widget-content ui-corner-tr">
-					<h5 class="ui-widget-header">High Tatras 2</h5>
-					<img src="images/high_tatras2_min.jpg" alt="The chalet at the Green mountain lake" width="96" height="72">
-					<a href="images/high_tatras2.jpg" title="View larger image" class="ui-icon ui-icon-zoomin">View larger</a>
-					<a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a>
-				</li>
-				<li class="ui-widget-content ui-corner-tr">
-					<h5 class="ui-widget-header">High Tatras 3</h5>
-					<img src="images/high_tatras3_min.jpg" alt="Planning the ascent" width="96" height="72">
-					<a href="images/high_tatras3.jpg" title="View larger image" class="ui-icon ui-icon-zoomin">View larger</a>
-					<a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a>
-				</li>
-				<li class="ui-widget-content ui-corner-tr">
-					<h5 class="ui-widget-header">High Tatras 4</h5>
-					<img src="images/high_tatras4_min.jpg" alt="On top of Kozi kopka" width="96" height="72">
-					<a href="images/high_tatras4.jpg" title="View larger image" class="ui-icon ui-icon-zoomin">View larger</a>
-					<a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a>
-				</li>
-			</ul>
-		</div>
-	</div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2" style="border-right: 1px dashed lightgray; background: #ededed;">
+                <h2 style="text-align: center;">Cards</h2>
+                <ul id="gallery" class="gallery ui-helper-reset ui-helper-clearfix">
+                </ul>
+            </div>
+            <div id="main" class="col-md-10">
+                <h2 style="text-align: center;">Categories</h2>
+                <!--<div class="col-md-3">
+                    <div style="border:1px solid #c0c0c0;" class="category legit-cat ui-widget-content ui-state-default">
+                        <h4 style="margin: 0; border: 0; padding-right: 7px;" class="ui-widget-header">Sample category <i style="color: #da1111; margin-right: 5px;" class="fa fa-times pull-right" aria-hidden="true"></i>
+                        </h4>
+                        Drag items here.
+                    </div>
+                </div>-->
+                <div class="col-md-3">
+                    <div style="border: 1px solid #c0c0c0; opacity: 0.8;" class="category create-new ui-widget-content ui-state-default">
+                        <h4 style="margin: 0; border: 0; padding-right: 7px;" class="ui-widget-header">Double-click to edit group name</h4>
+                        <div style="color: gray;font-size: 12px; text-align: center;">
+                            <div class="temporary"><i class="fa fa-arrows" aria-hidden="true"></i></div>
+                            Drag items here to create new group</div>
+                    </div>
+                </div>
 
-	<div class="container">
-		<div class="row">
-			<div class="col-md-6">
-				<div id="trash" class="ui-widget-content ui-state-default">
-					<h4 class="ui-widget-header"><span class="ui-icon ui-icon-trash">Trash</span> Sample category</h4>
-				</div>
-			</div>
 
-			<div class="cold-md-6">
-				<div id="trash2" class="ui-widget-content ui-state-default">
-					<h4 class="ui-widget-header"><span class="ui-icon ui-icon-trash">Trash</span> Sample category 2</h4>
-				</div>
-			</div>
-		</div>
-	</div>
+            </div>
+        </div>
+    </div>
 
 
 </div>
