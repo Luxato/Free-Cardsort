@@ -29,6 +29,8 @@
 <body>
 <div class="container">
     <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+        <!--<img src="<?/*= base_url() */?>assets/enus_22.png" data-toggle="tooltip" title="English" alt="English"> |-->
+        <img src="<?= base_url() ?>assets/dk_22.png" data-toggle="tooltip" title="Change language to Danish" alt="Danish">
         <div class="panel panel-info">
             <div class="panel-heading">
                 <div class="panel-title">Questionair</div>
@@ -52,10 +54,10 @@
 
                     <strong>What is your gender?</strong>
                     <div class="radio">
-                        <label><input type="radio" name="gender" value="Female" required="" data-parsley-errors-container=".container2">Female</label>
+                        <label><input type="radio" name="gender" value="F" required="" data-parsley-errors-container=".container2">Female</label>
                     </div>
                     <div class="radio">
-                        <label><input type="radio" name="gender" value="Male" required="" data-parsley-errors-container=".container2">Male</label>
+                        <label><input type="radio" name="gender" value="M" required="" data-parsley-errors-container=".container2">Male</label>
                     </div>
                     <div class="container2"></div>
                     <br>
@@ -158,7 +160,8 @@
         </div>
     </div>
 </div>
-
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <script type="text/javascript">
     $(function () {
         $('#loginform').parsley().on('field:validated', function () {
@@ -169,6 +172,9 @@
             .on('form:submit', function () {
                 console.log('odosielam form');
             });
+    });
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
     });
 </script>
 </body>

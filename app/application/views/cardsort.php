@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="https://bootswatch.com/flatly/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500" rel="stylesheet">
     <style>
         .legit-cat h5.ui-widget-header {
             background: #fff;
@@ -62,6 +63,7 @@
         .gallery li h5 {
             margin: 0 0 0.4em;
             cursor: move;
+            font-family: 'Montserrat', sans-serif !important;
         }
 
         .gallery li a {
@@ -176,7 +178,7 @@
                         "ui-droppable-active": "ui-state-highlight"
                     },
                     drop: function (event, ui) {
-                        console.log($(this).hasClass('.legit-cat'));
+                        $('#guide').hide();
                         deleteImage2(ui.draggable, $(this));
                         if ($(this).hasClass('create-new')) {
                             change_to_normal_state($(this));
@@ -278,18 +280,43 @@
     </script>
 </head>
 <body>
-
-<div class="ui-widget ui-helper-clearfix">
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a target="_blank" class="navbar-brand" href="https://github.com/Luxato/free-cardsort"><i style="font-size: 30px;position: relative;left: -8px;bottom: 7px;float: left;" class="fa fa-github" aria-hidden="true"></i> Free cardsort</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="../navbar/">Finished</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+<div style="margin-top: 60px;" class="ui-widget ui-helper-clearfix">
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-2" style="border-right: 1px dashed lightgray; background: #ededed;">
-                <h2 style="text-align: center;">Cards</h2>
+            <div class="col-md-3" style="padding-top:13px;word-wrap: break-word;border-right: 1px dashed lightgray; background: #A7B2B6;">
+                <!--<img src="<?/*= base_url() */?>assets/enus_22.png" data-placement="bottom" data-toggle="tooltip" title="English" alt="English"> |-->
+                <img style="position: relative;left: -3px;" class="pull-right" src="<?= base_url() ?>assets/dk_22.png" data-placement="bottom" data-toggle="tooltip" title="Danish" alt="Danish">
                 <ul id="gallery" class="gallery ui-helper-reset ui-helper-clearfix">
                 </ul>
             </div>
-            <div id="main" class="col-md-10">
-                <h2 style="text-align: center;">Categories</h2>
+            <div style="margin-top: 25px;" id="main" class="col-md-9">
+                <div id="guide" style="color:#4B555B;background: #E3EFF8; border: 2px solid #90BFE5; border-radius: 4px;" class="col-md-4">
+                    <h3>Step 1</h3>
+                    <p>Take a quick look at the list of items to the left.</p>
+                    <p>We'd like you to sort them into groups that make sense to you.</p>
+                    <p>There is no right or wrong answer, just do what comes naturally.</p>
+                    <h3>Step 2</h3>
+                    <p>When you're ready, drag an item from the left to create your first group.</p>
+                </div>
                 <!--<div class="col-md-3">
                     <div style="border:1px solid #c0c0c0;" class="category legit-cat ui-widget-content ui-state-default">
                         <h4 style="margin: 0; border: 0; padding-right: 7px;" class="ui-widget-header">Sample category <i style="color: #da1111; margin-right: 5px;" class="fa fa-times pull-right" aria-hidden="true"></i>
@@ -313,7 +340,11 @@
 
 
 </div>
-
-
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
 </body>
 </html>

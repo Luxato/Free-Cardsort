@@ -3,7 +3,8 @@ defined( 'BASEPATH' ) OR exit( 'No direct script access allowed' );
 
 class Cardsort extends CI_Controller {
 
-	public function index() {
+	public function index($lang = 'en') {
+		/*$this->session->sess_destroy();*/
 		if ( $this->input->server( 'REQUEST_METHOD' ) == "POST" ) {
 			// Proccess the form data
 			$ip_address   = $_SERVER['REMOTE_ADDR'];
