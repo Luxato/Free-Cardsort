@@ -13,48 +13,59 @@
             background: #fff;
             color: #000;
         }
+
         .legit-cat .gallery.ui-helper-reset {
             background: #A7B2B6;
         }
+
         .ui-helper-reset {
             padding: 3px 3px 0 3px;
             display: inline-block;
             width: 100%;
         }
+
         .category .ui-widget-content {
             background: #fff !important;
             margin: 3px 0;
         }
+
         .category {
             background: none;
         }
-        .create-new h4{
+
+        .create-new h4 {
             color: gray;
         }
+
         .col-md-4 {
             font-family: 'Montserrat', sans-serif;
         }
+
         .legit-cat .ui-widget-header {
             font-size: 1em;
             font-weight: 500;
-            cursor: pointer;
+            cursor: all-scroll;
             font-family: 'Montserrat', sans-serif;
             text-decoration: underline;
             color: #b55c27;
             background: #D4DDDF;
-            height: 50px;
-            text-align: center;
+            /*height: 50px;*/
+            text-align: left;
         }
+
         h4 {
             padding: 4px 0 4px 7px;
         }
+
         .category .ui-widget-content, .category li h5 {
             display: inline-block !important;
             float: left !important;
         }
+
         .category li h5 {
             border: none;
         }
+
         .category .ui-widget-content {
             border: 1px solid lightgray;
             background: #E9E9E9;
@@ -131,13 +142,16 @@
         .gallery li {
             z-index: 999999;
         }
+
         .ui-widget-header {
             font-weight: 400;
         }
+
         #gallery .ui-widget-header {
             background: #fff;
             padding: 4px;
         }
+
         .ui-state-highlight {
             background: #ffeacd !important;
         }
@@ -145,9 +159,12 @@
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
+        var languages = [];
+
         function tooltip() {
             $('[data-toggle="tooltip"]').tooltip();
         }
+
         $(function () {
             function reload() {
                 var oriVal;
@@ -174,13 +191,10 @@
 
                 // There's the gallery and the trash
                 var $gallery = $("#gallery"),
-                $trash2 = $(".category");
+                    $trash2 = $(".category");
 
                 // Let the gallery items be draggable
                 $("li", $gallery).draggable({
-                    start: function () {
-                        console.log('zacinam tahat');
-                    },
                     cancel: "a.ui-icon", // clicking an icon won't initiate dragging
                     revert: "invalid", // when not dropped, the item will revert back to its initial position
                     containment: "document",
@@ -219,13 +233,19 @@
 
                 function deleteImage2($item, $container) {
                     $item.fadeOut(function () {
-                        console.log($container);
-                        var $list = $("ul", $container).length ?
-                            $("ul", $container) :
-                            $("<ul class='gallery ui-helper-reset'/>").appendTo($container);
-                            $container.append("<div class=\"counter\" style=\"display: block;font-size: 13px;width: 100%; padding: 8px 0 8px 8px; background: #D4DDDF;\">2 items</div>");
+                        if ($("ul", $container).length) {
+                            $list = $("ul", $container);
+                            var tmp = $container.find('.counter').text().split(' ');
+                            console.log(tmp);
+                            tmp[0]++;
+                            $container.find('.counter').text(tmp[0] + ' Items');
+                        } else {
+                            $list = $("<ul class='gallery ui-helper-reset'/>").appendTo($container);
+                            $container.append("<div class=\"counter\" style=\"display: block;font-size: 13px;width: 100%; padding: 8px 0 8px 8px; background: #D4DDDF;\">1 Item</div>");
+                        }
+
                         $item.find("a.ui-icon-trash").remove();
-                        $item.append(recycle_icon).appendTo($list).fadeIn('fast',function () {
+                        $item.append(recycle_icon).appendTo($list).fadeIn('fast', function () {
                             $('[data-toggle="tooltip"]').tooltip();
                         });
                     });
@@ -266,28 +286,32 @@
                 var title = $item.parent().find('h4').parent();
                 title.removeClass('create-new');
                 title.addClass('legit-cat');
-                title.css('opacity','1');
+                title.css('opacity', '1');
                 $item.parent().find('.temporary').parent().remove();
                 $item.parent().find('.counter').show();
                 $item.parent().find('h4').replaceWith('<h4 style="line-height: 39px; margin: 0; border: 0; padding-right: 7px;" class="ui-widget-header">Click to rename <i style="color: #da1111; margin-right: 5px;" class="fa fa-times pull-right" aria-hidden="true"></i>');
                 // Create new placeholder
-                $('#main').append('<div class="col-md-4">\n' +
+                $('#main').append('<div class="row"><div class="col-md-4">\n' +
                     '                    <div style="border-radius: 4px; border: 1px solid #b7c6c9; opacity: 0.8;" class="category create-new ui-widget-content ui-state-default">\n' +
                     '                        <h4 style="margin: 0; border: 0; padding-right: 7px;" class="ui-widget-header">Click to rename</h4>\n' +
                     ' <div style="height: 100px;line-height: 20px;padding-top: 27px;color: gray;font-size: 12px; text-align: center;"> ' +
                     '                            <div class="temporary"><i class="fa fa-arrows" aria-hidden="true"></i></div>\n' +
                     '                            Drag items here to create new group</div>\n' +
                     '                    </div>\n' +
-                    '                </div>');
+                    '                </div></div>');
                 reload();
             }
 
-            $.getJSON('cards.json',function(data){
+            $.getJSON('cards.json', function (data) {
                 //alert(JSON.stringify(data));
                 var gallery = $('#gallery');
                 for (index in data.cards) {
-                    gallery.append('<li id="'+index+'" class="ui-widget-content ui-corner-tr">\n' +
-                        '                        <h5 class="ui-widget-header"><i style="font-size: 11px; position: relative; top: -2px;" class="fa fa-arrows" aria-hidden="true"></i> '+data.cards[index].en+'</h5>\n' +
+                    languages.push({
+                        'en': data.cards[index].en,
+                        'dk': data.cards[index].dk
+                    });
+                    gallery.append('<li id="' + index + '" class="ui-widget-content ui-corner-tr">\n' +
+                        '                        <h5 class="ui-widget-header"><i style="font-size: 11px; position: relative; top: -2px;" class="fa fa-arrows" aria-hidden="true"></i> ' + data.cards[index].en + '</h5>\n' +
                         '                        <a style="display: none;" href="link/to/trash/script/when/we/have/js/off"\n' +
                         '                           title="Delete this image"\n' +
                         '                           class="ui-icon ui-icon-trash">Delete image</a>\n' +
@@ -302,17 +326,24 @@
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a target="_blank" class="navbar-brand" href="https://github.com/Luxato/free-cardsort"><i style="font-size: 30px;position: relative;left: -8px;bottom: 7px;float: left;" class="fa fa-github" aria-hidden="true"></i> Cardsort</a>
+            <a target="_blank" class="navbar-brand" href="https://github.com/Luxato/free-cardsort"><i
+                        style="font-size: 30px;position: relative;left: -8px;bottom: 7px;float: left;"
+                        class="fa fa-github" aria-hidden="true"></i> Cardsort</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <form action="<?= base_url() ?>" method="POST">
-                <button data-placement="bottom" type="submit" style="float: right;position: relative;top: 8px;" data-toggle="tooltip" title="You can submit your results when you will be finished" class="btn btn-md btn-success"><i class="fa fa-paper-plane-o" aria-hidden="true"></i> Send results</button>
+                <button data-placement="bottom" type="submit" style="float: right;position: relative;top: 8px;"
+                        data-toggle="tooltip" title="You can submit your results when you will be finished"
+                        class="btn btn-md btn-success"><i class="fa fa-paper-plane-o" aria-hidden="true"></i> Send
+                    results
+                </button>
             </form>
         </div><!--/.nav-collapse -->
     </div>
@@ -321,14 +352,18 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-3" style="padding-top:13px;word-wrap: break-word;border-right: 1px dashed lightgray; background: #A7B2B6;">
-                <!--<img src="<?/*= base_url() */?>assets/enus_22.png" data-placement="bottom" data-toggle="tooltip" title="English" alt="English"> |-->
-                <img style="position: relative;left: -3px;" class="pull-right" src="<?= base_url() ?>assets/dk_22.png" data-placement="bottom" data-toggle="tooltip" title="Switch to Danish" alt="Danish">
+            <div class="col-md-3"
+                 style="padding-top:13px;word-wrap: break-word;border-right: 1px dashed lightgray; background: #A7B2B6;">
+                <img id="changeLang" style="position: relative;left: -3px; cursor: pointer;" class="pull-right"
+                     src="<?= base_url() ?>assets/dk_22.png" data-placement="bottom" data-toggle="tooltip"
+                     title="Switch to Danish" alt="Danish">
                 <ul id="gallery" class="gallery ui-helper-reset ui-helper-clearfix">
                 </ul>
             </div>
             <div style="margin-top: 25px;" id="main" class="col-md-9">
-                <div id="guide" style="color:#4B555B;background: #E3EFF8; border: 2px solid #90BFE5; border-radius: 4px;" class="col-md-4">
+                <div id="guide"
+                     style="color:#4B555B;background: #E3EFF8; border: 2px solid #90BFE5; border-radius: 4px;"
+                     class="col-md-4">
                     <h3>Step 1</h3>
                     <p>Take a quick look at the list of items to the left.</p>
                     <p>We'd like you to sort them into groups that make sense to you.</p>
@@ -344,8 +379,10 @@
                     </div>
                 </div>-->
                 <div class="col-md-4">
-                    <div style="border-radius:4px;border: 1px solid #c0c0c0; opacity: 0.8;" class="category create-new ui-widget-content ui-state-default">
-                        <h4 style="margin: 0; border: 0; padding-right: 7px;" class="ui-widget-header">Click to rename</h4>
+                    <div style="border-radius:4px;border: 1px solid #c0c0c0; opacity: 0.8;"
+                         class="category create-new ui-widget-content ui-state-default">
+                        <h4 style="margin: 0; border: 0; padding-right: 7px;" class="ui-widget-header">Click to
+                            rename</h4>
                         <div style="height: 100px;line-height: 20px;padding-top: 27px;color: gray;font-size: 12px; text-align: center;">
                             <div class="temporary"><i class="fa fa-arrows" aria-hidden="true"></i></div>
                             Drag items here to create new group
@@ -360,10 +397,45 @@
 
 
 </div>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
 <script>
-    $(function(){
+    $(function () {
         tooltip();
+        var tmp = 0;
+        $('#changeLang').on('click', function () {
+            var elements = $('#gallery').find('li');
+            if (tmp % 2 == 0) {
+                lang = 'dk';
+                $('#changeLang').attr('src', '<?= base_url() ?>assets/enus_22.png');
+                $('#changeLang').attr('original-title', 'Switch to English');
+                $('#changeLang').attr('data-original-title', 'Switch to English');
+            } else {
+                lang = 'en';
+                $('#changeLang').attr('src', '<?= base_url() ?>assets/dk_22.png');
+                $('#changeLang').attr('original-title', 'Switch to Danish');
+                $('#changeLang').attr('data-original-title', 'Switch to Danish');
+            }
+            for (var i = 0, max = elements.length; i < max; i++) {
+                var id = $(elements[i]).attr('id');
+                $(elements[i]).find('h5').html('<i style="font-size: 11px; position: relative; top: -2px;" class="fa fa-arrows" aria-hidden="true"></i> ' + languages[id][lang]);
+            }
+            var elements = $('ul.gallery.ui-helper-reset');
+            //console.log('elements length je ' + elements.length);
+            //console.log($(elements[1].children[0]).attr('id'));
+            for (i = 0; i < elements.length; i++) {
+                if (i == 0) continue;
+                //console.log('icko je ' + i);
+                for (var l = 0, max = elements[i].children.length; l < max; l++) {
+                    //console.log(elements[i].children.length);
+                    var id = $(elements[i].children[l]).attr('id');
+                    $(elements[i].children[l]).find('h5').html('<i style="font-size: 11px; position: relative; top: -2px;" class="fa fa-arrows" aria-hidden="true"></i> ' + languages[id][lang]);
+                }
+            }
+            tmp++;
+            // TODO translate all cards in boxes as well
+        });
     });
 </script>
 </body>
