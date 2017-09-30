@@ -13,6 +13,9 @@
             background: #fff;
             color: #000;
         }
+        .legit-cat .gallery.ui-helper-reset {
+            background: #A7B2B6;
+        }
         .ui-helper-reset {
             padding: 3px 3px 0 3px;
             display: inline-block;
@@ -28,9 +31,19 @@
         .create-new h4{
             color: gray;
         }
+        .col-md-4 {
+            font-family: 'Montserrat', sans-serif;
+        }
         .legit-cat .ui-widget-header {
-            color: #fff;
-            background: #333;
+            font-size: 1em;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            text-decoration: underline;
+            color: #b55c27;
+            background: #D4DDDF;
+            height: 50px;
+            text-align: center;
         }
         h4 {
             padding: 4px 0 4px 7px;
@@ -132,6 +145,9 @@
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
+        function tooltip() {
+            $('[data-toggle="tooltip"]').tooltip();
+        }
         $(function () {
             function reload() {
                 var oriVal;
@@ -178,11 +194,11 @@
                         "ui-droppable-active": "ui-state-highlight"
                     },
                     drop: function (event, ui) {
-                        $('#guide').hide();
                         deleteImage2(ui.draggable, $(this));
                         if ($(this).hasClass('create-new')) {
                             change_to_normal_state($(this));
                         }
+
                     }
                 });
 
@@ -199,16 +215,18 @@
                 });
 
                 // Image deletion function
-                var recycle_icon = "<a href='link/to/recycle/script/when/we/have/js/off' title='Recycle this image'><i class='fa fa-trash' aria-hidden='true'></i></a>";
+                var recycle_icon = "<a class='_tooltip' href='link/to/recycle/script/when/we/have/js/off' data-toggle=\"tooltip\" title=\"Undo\" title='Recycle this image'><i class='fa fa-undo' aria-hidden='true'></i></a>";
 
                 function deleteImage2($item, $container) {
                     $item.fadeOut(function () {
+                        console.log($container);
                         var $list = $("ul", $container).length ?
                             $("ul", $container) :
                             $("<ul class='gallery ui-helper-reset'/>").appendTo($container);
+                            $container.append("<div class=\"counter\" style=\"display: block;font-size: 13px;width: 100%; padding: 8px 0 8px 8px; background: #D4DDDF;\">2 items</div>");
                         $item.find("a.ui-icon-trash").remove();
                         $item.append(recycle_icon).appendTo($list).fadeIn('fast',function () {
-
+                            $('[data-toggle="tooltip"]').tooltip();
                         });
                     });
                 }
@@ -240,7 +258,6 @@
                     } else if ($target.is("a.ui-icon-refresh")) {
                         recycleImage($item);
                     }
-
                     return false;
                 });
             }
@@ -251,11 +268,13 @@
                 title.addClass('legit-cat');
                 title.css('opacity','1');
                 $item.parent().find('.temporary').parent().remove();
-                $item.parent().find('h4').replaceWith('<h4 style="margin: 0; border: 0; padding-right: 7px;" class="ui-widget-header">Sample category <i style="color: #da1111; margin-right: 5px;" class="fa fa-times pull-right" aria-hidden="true"></i>');
-                $('#main').append('<div class="col-md-3">\n' +
-                    '                    <div style="border: 1px solid #c0c0c0; opacity: 0.8;" class="category create-new ui-widget-content ui-state-default">\n' +
-                    '                        <h4 style="margin: 0; border: 0; padding-right: 7px;" class="ui-widget-header">Double-click to edit group name</h4>\n' +
-                    '                        <div style="color: gray;font-size: 12px; text-align: center;">\n' +
+                $item.parent().find('.counter').show();
+                $item.parent().find('h4').replaceWith('<h4 style="line-height: 39px; margin: 0; border: 0; padding-right: 7px;" class="ui-widget-header">Click to rename <i style="color: #da1111; margin-right: 5px;" class="fa fa-times pull-right" aria-hidden="true"></i>');
+                // Create new placeholder
+                $('#main').append('<div class="col-md-4">\n' +
+                    '                    <div style="border-radius: 4px; border: 1px solid #b7c6c9; opacity: 0.8;" class="category create-new ui-widget-content ui-state-default">\n' +
+                    '                        <h4 style="margin: 0; border: 0; padding-right: 7px;" class="ui-widget-header">Click to rename</h4>\n' +
+                    ' <div style="height: 100px;line-height: 20px;padding-top: 27px;color: gray;font-size: 12px; text-align: center;"> ' +
                     '                            <div class="temporary"><i class="fa fa-arrows" aria-hidden="true"></i></div>\n' +
                     '                            Drag items here to create new group</div>\n' +
                     '                    </div>\n' +
@@ -289,12 +308,12 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a target="_blank" class="navbar-brand" href="https://github.com/Luxato/free-cardsort"><i style="font-size: 30px;position: relative;left: -8px;bottom: 7px;float: left;" class="fa fa-github" aria-hidden="true"></i> Free cardsort</a>
+            <a target="_blank" class="navbar-brand" href="https://github.com/Luxato/free-cardsort"><i style="font-size: 30px;position: relative;left: -8px;bottom: 7px;float: left;" class="fa fa-github" aria-hidden="true"></i> Cardsort</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="../navbar/">Finished</a></li>
-            </ul>
+            <form action="<?= base_url() ?>" method="POST">
+                <button data-placement="bottom" type="submit" style="float: right;position: relative;top: 8px;" data-toggle="tooltip" title="You can submit your results when you will be finished" class="btn btn-md btn-success"><i class="fa fa-paper-plane-o" aria-hidden="true"></i> Send results</button>
+            </form>
         </div><!--/.nav-collapse -->
     </div>
 </nav>
@@ -304,7 +323,7 @@
         <div class="row">
             <div class="col-md-3" style="padding-top:13px;word-wrap: break-word;border-right: 1px dashed lightgray; background: #A7B2B6;">
                 <!--<img src="<?/*= base_url() */?>assets/enus_22.png" data-placement="bottom" data-toggle="tooltip" title="English" alt="English"> |-->
-                <img style="position: relative;left: -3px;" class="pull-right" src="<?= base_url() ?>assets/dk_22.png" data-placement="bottom" data-toggle="tooltip" title="Danish" alt="Danish">
+                <img style="position: relative;left: -3px;" class="pull-right" src="<?= base_url() ?>assets/dk_22.png" data-placement="bottom" data-toggle="tooltip" title="Switch to Danish" alt="Danish">
                 <ul id="gallery" class="gallery ui-helper-reset ui-helper-clearfix">
                 </ul>
             </div>
@@ -324,12 +343,13 @@
                         Drag items here.
                     </div>
                 </div>-->
-                <div class="col-md-3">
-                    <div style="border: 1px solid #c0c0c0; opacity: 0.8;" class="category create-new ui-widget-content ui-state-default">
-                        <h4 style="margin: 0; border: 0; padding-right: 7px;" class="ui-widget-header">Double-click to edit group name</h4>
-                        <div style="color: gray;font-size: 12px; text-align: center;">
+                <div class="col-md-4">
+                    <div style="border-radius:4px;border: 1px solid #c0c0c0; opacity: 0.8;" class="category create-new ui-widget-content ui-state-default">
+                        <h4 style="margin: 0; border: 0; padding-right: 7px;" class="ui-widget-header">Click to rename</h4>
+                        <div style="height: 100px;line-height: 20px;padding-top: 27px;color: gray;font-size: 12px; text-align: center;">
                             <div class="temporary"><i class="fa fa-arrows" aria-hidden="true"></i></div>
-                            Drag items here to create new group</div>
+                            Drag items here to create new group
+                        </div>
                     </div>
                 </div>
 
@@ -342,8 +362,8 @@
 </div>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <script>
-    $(document).ready(function(){
-        $('[data-toggle="tooltip"]').tooltip();
+    $(function(){
+        tooltip();
     });
 </script>
 </body>

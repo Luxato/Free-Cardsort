@@ -29,11 +29,14 @@
 <body>
 <div class="container">
     <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-        <!--<img src="<?/*= base_url() */?>assets/enus_22.png" data-toggle="tooltip" title="English" alt="English"> |-->
-        <img src="<?= base_url() ?>assets/dk_22.png" data-toggle="tooltip" title="Change language to Danish" alt="Danish">
+        <?php if($lang === 'en'): ?>
+            <a href="<?= base_url() ?>dk"><img style="cursor: pointer;" src="<?= base_url() ?>assets/dk_22.png" data-toggle="tooltip" title="Switch to Danish" alt="Danish"></a>
+        <?php else: ?>
+            <a href="<?= base_url() ?>en"><img style="cursor: pointer;" src="<?= base_url() ?>assets/enus_22.png" data-toggle="tooltip" title="Switch to English" alt="English"></a>
+        <?php endif; ?>
         <div class="panel panel-info">
             <div class="panel-heading">
-                <div class="panel-title">Questionair</div>
+                <div class="panel-title"><?= lang('questionair') ?></div>
                 <div style="float:right; font-size: 80%; position: relative; top:-10px"><a href="#"></a></div>
             </div>
 
@@ -46,13 +49,13 @@
                     <div class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                         <input id="login-username" type="text" class="form-control" name="username" value=""
-                               placeholder="Your first name" required="" data-parsley-errors-container="#container1">
+                               placeholder="<?= lang('your_first_name') ?>" required="" data-parsley-errors-container="#container1">
                     </div>
                     <div id="container1"></div>
 
                     <br>
 
-                    <strong>What is your gender?</strong>
+                    <strong><?= lang('what_is_your_gender') ?></strong>
                     <div class="radio">
                         <label><input type="radio" name="gender" value="F" required="" data-parsley-errors-container=".container2">Female</label>
                     </div>
@@ -62,15 +65,15 @@
                     <div class="container2"></div>
                     <br>
 
-                    <strong>How old are you?</strong>
+                    <strong><?= lang('how_old_are_you') ?></strong>
                     <div class="radio">
-                        <label><input type="radio" name="age" value="Under 18" required="">Under 18</label>
+                        <label><input type="radio" name="age" value="Under 18" required=""><?= lang('under_18') ?></label>
                     </div>
                     <div class="radio">
-                        <label><input type="radio" name="age" value="18 to 28" required="">18 to 28</label>
+                        <label><input type="radio" name="age" value="18 to 28" required=""><?= lang('18_to_28') ?></label>
                     </div>
                     <div class="radio">
-                        <label><input type="radio" name="age" value="29 to 64" required="">29 to 64</label>
+                        <label><input type="radio" name="age" value="29 to 64" required=""><?= lang('29_to_64') ?></label>
                     </div>
                     <div class="radio">
                         <label><input type="radio" name="age" value="65+" required="">65+</label>
@@ -78,7 +81,7 @@
 
                     <div style="margin-top:10px" class="form-group">
                         <div class="col-sm-12 controls">
-                            <button type="submit" class="btn btn-success pull-right">Start</button>
+                            <button type="submit" class="btn btn-success pull-right"><?= lang('start') ?></button>
                         </div>
                     </div>
                 </form>

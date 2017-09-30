@@ -32,4 +32,12 @@ class Cardsort extends CI_Controller {
 			'applicant_id' => $this->session->applicant_id
 		] );
 	}
+
+	public function process_results() {
+		// TODO
+		// Process results
+		// Destroy session
+		// Redirect to startpage
+		// Show thank you modal
+	}
 }
