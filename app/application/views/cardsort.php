@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500" rel="stylesheet">
     <style>
+        html,body,.container {
+            height:100% !important;
+        }
         .legit-cat h5.ui-widget-header {
             background: #fff;
             color: #000;
@@ -16,6 +19,7 @@
 
         .legit-cat .gallery.ui-helper-reset {
             background: #A7B2B6;
+            padding: 10px;
         }
 
         .ui-helper-reset {
@@ -40,16 +44,16 @@
         .col-md-4 {
             font-family: 'Montserrat', sans-serif;
         }
-
-        .legit-cat .ui-widget-header {
+        .fa-undo {
+            position: relative;
+            left: -3px;
+        }
+        .legit-cat h4.ui-widget-header {
             font-size: 1em;
             font-weight: 500;
-            cursor: all-scroll;
             font-family: 'Montserrat', sans-serif;
-            text-decoration: underline;
             color: #b55c27;
             background: #D4DDDF;
-            /*height: 50px;*/
             text-align: left;
         }
 
@@ -59,7 +63,6 @@
 
         .category .ui-widget-content, .category li h5 {
             display: inline-block !important;
-            float: left !important;
         }
 
         .category li h5 {
@@ -155,6 +158,9 @@
         .ui-state-highlight {
             background: #ffeacd !important;
         }
+        h4.ui-widget-header {
+            cursor: pointer;
+        }
     </style>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -164,13 +170,14 @@
         function tooltip() {
             $('[data-toggle="tooltip"]').tooltip();
         }
-
+        var height;
         $(function () {
             function reload() {
                 var oriVal;
                 $(".category").on('click', 'h4', function () {
-                    oriVal = $(this).text();
-                    $(this).text("");
+                    if  ($(this).text() == '') return;
+                    oriVal = $(this).html();
+                    $(this).html("");
                     $("<input style='width: 100%;color: gray;' type='text'>")
                         .appendTo(this)
                         .focus()
@@ -178,7 +185,11 @@
                         .on('blur keyup', function (e) {
                             if (e.type == 'blur' || e.keyCode == '13') {
                                 var $this = $(this);
-                                $this.parent().text($this.val() || oriVal);
+                                if  ($this.val()) {
+                                    $this.parent().html($this.val() + '<i style="color: #89949b; margin-right: 5px;" class="fa fa-times pull-right" aria-hidden="true"></i>');
+                                } else {
+                                    $this.parent().html(oriVal);
+                                }
                                 $this.remove();
                             }
                         });
@@ -203,7 +214,7 @@
                 });
 
                 $trash2.droppable({
-                    accept: "#gallery > li",
+                    accept: "#gallery > li, #trash li, .category li",
                     classes: {
                         "ui-droppable-active": "ui-state-highlight"
                     },
@@ -224,19 +235,24 @@
                         "ui-droppable-active": "custom-state-active"
                     },
                     drop: function (event, ui) {
-                        //recycleImage(ui.draggable);
+                        recycleImage(ui.draggable);
                     }
                 });
 
                 // Image deletion function
-                var recycle_icon = "<a class='_tooltip' href='link/to/recycle/script/when/we/have/js/off' data-toggle=\"tooltip\" title=\"Undo\" title='Recycle this image'><i class='fa fa-undo' aria-hidden='true'></i></a>";
+                /*var recycle_icon = "<a class='_tooltip' href='link/to/recycle/script/when/we/have/js/off' data-toggle=\"tooltip\" title=\"Undo\" title='Recycle this image'><i class='fa fa-undo' aria-hidden='true'></i></a>";*/
+                var recycle_icon = "";
 
                 function deleteImage2($item, $container) {
+                    $('#aside').height(height);
+                    if($('#guide').is(':visible')) {
+                        $('#guide').hide();
+                        $('#guide2').show();
+                    }
                     $item.fadeOut(function () {
                         if ($("ul", $container).length) {
                             $list = $("ul", $container);
                             var tmp = $container.find('.counter').text().split(' ');
-                            console.log(tmp);
                             tmp[0]++;
                             $container.find('.counter').text(tmp[0] + ' Items');
                         } else {
@@ -255,15 +271,12 @@
                 var trash_icon = "<a href='link/to/trash/script/when/we/have/js/off' title='Delete this image' class='ui-icon ui-icon-trash'>Delete image</a>";
 
                 function recycleImage($item) {
+                    console.log($item);
                     $item.fadeOut(function () {
-                        $item
-                            .find("a.ui-icon-refresh")
-                            .remove()
-                            .end()
-                            .append(trash_icon)
-                            .end()
-                            .appendTo($gallery)
-                            .fadeIn();
+                        $item.remove();
+                        $gallery.prepend($item);
+                        $item.fadeIn();
+                        reload();
                     });
                 }
 
@@ -289,16 +302,16 @@
                 title.css('opacity', '1');
                 $item.parent().find('.temporary').parent().remove();
                 $item.parent().find('.counter').show();
-                $item.parent().find('h4').replaceWith('<h4 style="line-height: 39px; margin: 0; border: 0; padding-right: 7px;" class="ui-widget-header">Click to rename <i style="color: #da1111; margin-right: 5px;" class="fa fa-times pull-right" aria-hidden="true"></i>');
+                $item.parent().find('h4').replaceWith('<h4 style="line-height: 39px; margin: 0; border: 0; padding-right: 7px;" class="ui-widget-header">Click to rename <i style="color: #89949b; margin-right: 5px;" class="fa fa-times pull-right" aria-hidden="true"></i></h4>');
                 // Create new placeholder
-                $('#main').append('<div class="row"><div class="col-md-4">\n' +
-                    '                    <div style="border-radius: 4px; border: 1px solid #b7c6c9; opacity: 0.8;" class="category create-new ui-widget-content ui-state-default">\n' +
+                $('#main').append('<div class="col-md-4">\n' +
+                    '                    <div style="margin:10px 0;border-radius: 4px; border: 1px solid #b7c6c9; opacity: 0.8;" class="category create-new ui-widget-content ui-state-default">\n' +
                     '                        <h4 style="margin: 0; border: 0; padding-right: 7px;" class="ui-widget-header">Click to rename</h4>\n' +
                     ' <div style="height: 100px;line-height: 20px;padding-top: 27px;color: gray;font-size: 12px; text-align: center;"> ' +
                     '                            <div class="temporary"><i class="fa fa-arrows" aria-hidden="true"></i></div>\n' +
                     '                            Drag items here to create new group</div>\n' +
                     '                    </div>\n' +
-                    '                </div></div>');
+                    '                </div>');
                 reload();
             }
 
@@ -338,7 +351,7 @@
                         class="fa fa-github" aria-hidden="true"></i> Cardsort</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-            <form action="<?= base_url() ?>" method="POST">
+            <form id="submit" action="<?= base_url() ?>" method="POST">
                 <button data-placement="bottom" type="submit" style="float: right;position: relative;top: 8px;"
                         data-toggle="tooltip" title="You can submit your results when you will be finished"
                         class="btn btn-md btn-success"><i class="fa fa-paper-plane-o" aria-hidden="true"></i> Send
@@ -352,7 +365,7 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-3"
+            <div id="aside" class="col-md-3"
                  style="padding-top:13px;word-wrap: break-word;border-right: 1px dashed lightgray; background: #A7B2B6;">
                 <img id="changeLang" style="position: relative;left: -3px; cursor: pointer;" class="pull-right"
                      src="<?= base_url() ?>assets/dk_22.png" data-placement="bottom" data-toggle="tooltip"
@@ -379,7 +392,7 @@
                     </div>
                 </div>-->
                 <div class="col-md-4">
-                    <div style="border-radius:4px;border: 1px solid #c0c0c0; opacity: 0.8;"
+                    <div style="margin:10px 0;border-radius:4px;border: 1px solid #c0c0c0; opacity: 0.8;"
                          class="category create-new ui-widget-content ui-state-default">
                         <h4 style="margin: 0; border: 0; padding-right: 7px;" class="ui-widget-header">Click to
                             rename</h4>
@@ -392,10 +405,42 @@
 
 
             </div>
+            <div class="container">
+                <div class="row">
+                    <div id="guide2"
+                         style="float: right;margin-bottom: 25px;display: none;margin-left:15px;color:#4B555B;background: #E3EFF8; border: 2px solid #90BFE5; border-radius: 4px;"
+                         class="col-md-4">
+                        <h3>Step 3</h3>
+                        <p>If you already know what you'd like to call this group, click the title to rename it now. If not, you can do this later.</p>
+                        <h3>Step 4</h3>
+                        <p>When you're done, click "Finished" (top right).</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
 
+</div>
+<div id="submitModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <p>You must sort all the cards and name all the groups before you can finish.</p>
+                    <p>Click the group title to change it.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-info" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
+
+    </div>
 </div>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
         integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
@@ -434,7 +479,14 @@
                 }
             }
             tmp++;
-            // TODO translate all cards in boxes as well
+        });
+        $('#submit').on('submit', function (e) {
+            e.preventDefault();
+            if ($('#gallery').find('li').length > 0) {
+                $('#submitModal').modal('show');
+            } else {
+                $(this).submit();
+            }
         });
     });
 </script>
