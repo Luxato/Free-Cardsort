@@ -3,12 +3,11 @@ defined( 'BASEPATH' ) OR exit( 'No direct script access allowed' );
 
 class Cardsort extends CI_Controller {
 
-	public function index($lang = 'en') {
-		/*$this->session->sess_destroy();*/
+	public function index( $lang = 'en' ) {
 		if ( $this->input->server( 'REQUEST_METHOD' ) == "POST" ) {
 			// Proccess the form data
-			$ip_address   = $_SERVER['REMOTE_ADDR'];
-			$data         = [
+			$ip_address = $_SERVER['REMOTE_ADDR'];
+			$data       = [
 				'name'              => $this->input->post( 'username' ),
 				'age_group'         => $this->input->post( 'age' ),
 				'ip_address'        => $ip_address,
@@ -23,11 +22,11 @@ class Cardsort extends CI_Controller {
 			// Redirect, to prevent form ressubmition.
 			redirect( base_url() . 'cardsort' );
 		}
-		
-		if (!$this->session->applicant_id) {
+
+		if ( ! $this->session->applicant_id ) {
 			redirect( base_url() );
 		}
-		
+
 		$this->load->view( 'cardsort', [
 			'applicant_id' => $this->session->applicant_id
 		] );
@@ -35,9 +34,11 @@ class Cardsort extends CI_Controller {
 
 	public function process_results() {
 		// TODO
-		// Process results
-		// Destroy session
-		// Redirect to startpage
-		// Show thank you modal
+		// Save results to database
+		$this->session->unset_userdata( 'username' );
+		$this->session->unset_userdata( 'applicant_id' );
+		$this->session->set_flashdata( 'finish', TRUE );
+
+		redirect( base_url() );
 	}
 }

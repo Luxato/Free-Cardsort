@@ -163,8 +163,35 @@
         </div>
     </div>
 </div>
+
+    <div id="thankYou" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Success!</h4>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Thank you for your time.</strong></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-md btn-success" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<?php if($this->session->flashdata('finish')): ?>
+    <script>
+        $(function(){
+            $('#thankYou').modal('show');
+        });
+    </script>
+<?php endif; ?>
 <script type="text/javascript">
     $(function () {
         $('#loginform').parsley().on('field:validated', function () {

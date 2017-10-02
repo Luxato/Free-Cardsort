@@ -365,7 +365,7 @@
                         class="fa fa-github" aria-hidden="true"></i> Cardsort</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-            <form id="submit" action="<?= base_url() ?>" method="POST">
+            <form id="submit" action="<?= base_url() ?>cardsort/process_results" method="POST">
                 <button data-placement="bottom" type="submit" style="float: right;position: relative;top: 8px;"
                         data-toggle="tooltip" title="You can submit your results when you will be finished"
                         class="btn btn-md btn-success"><i class="fa fa-paper-plane-o" aria-hidden="true"></i> Send
@@ -467,14 +467,14 @@
             var elements = $('#gallery').find('li');
             if (tmp % 2 == 0) {
                 lang = 'dk';
-                $('#changeLang').attr('src', '<?= base_url() ?>assets/enus_22.png');
-                $('#changeLang').attr('original-title', 'Switch to English');
-                $('#changeLang').attr('data-original-title', 'Switch to English');
+                $(this).attr('src', '<?= base_url() ?>assets/enus_22.png');
+                $(this).attr('original-title', 'Switch to English');
+                $(this).attr('data-original-title', 'Switch to English');
             } else {
                 lang = 'en';
-                $('#changeLang').attr('src', '<?= base_url() ?>assets/dk_22.png');
-                $('#changeLang').attr('original-title', 'Switch to Danish');
-                $('#changeLang').attr('data-original-title', 'Switch to Danish');
+                $(this).attr('src', '<?= base_url() ?>assets/dk_22.png');
+                $(this).attr('original-title', 'Switch to Danish');
+                $(this).attr('data-original-title', 'Switch to Danish');
             }
             for (var i = 0, max = elements.length; i < max; i++) {
                 var id = $(elements[i]).attr('id');
@@ -495,11 +495,9 @@
             tmp++;
         });
         $('#submit').on('submit', function (e) {
+            if ($('#gallery li').length > 0) {
             e.preventDefault();
-            if ($('#gallery').find('li').length > 0) {
                 $('#submitModal').modal('show');
-            } else {
-                $(this).submit();
             }
         });
     });
