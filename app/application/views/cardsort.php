@@ -21,7 +21,9 @@
             background: #A7B2B6;
             padding: 10px;
         }
-
+        .legit-cat.ui-state-highlight .ui-helper-reset{
+            background: #ffeacd !important;
+        }
         .ui-helper-reset {
             padding: 3px 3px 0 3px;
             display: inline-block;
@@ -305,7 +307,7 @@
                 $item.parent().find('h4').replaceWith('<h4 style="line-height: 39px; margin: 0; border: 0; padding-right: 7px;" class="ui-widget-header">Click to rename <i style="color: #89949b; margin-right: 5px;" class="fa fa-times pull-right" aria-hidden="true"></i></h4>');
                 // Create new placeholder
                 $('#main').append('<div class="col-md-4">\n' +
-                    '                    <div style="margin:10px 0;border-radius: 4px; border: 1px solid #b7c6c9; opacity: 0.8;" class="category create-new ui-widget-content ui-state-default">\n' +
+                    '                    <div style="margin:10px 0;border-radius: 4px; border: 1px solid #b7c6c9;" class="category create-new ui-widget-content ui-state-default">\n' +
                     '                        <h4 style="margin: 0; border: 0; padding-right: 7px;" class="ui-widget-header">Click to rename</h4>\n' +
                     ' <div style="height: 100px;line-height: 20px;padding-top: 27px;color: gray;font-size: 12px; text-align: center;"> ' +
                     '                            <div class="temporary"><i class="fa fa-arrows" aria-hidden="true"></i></div>\n' +
@@ -432,8 +434,8 @@
                 <h4 class="modal-title"></h4>
             </div>
             <div class="modal-body">
-                <p>You must sort all the cards and name all the groups before you can finish.</p>
-                    <p>Click the group title to change it.</p>
+                <p><strong>You must sort all the cards and name all the groups before you can finish.</strong></p>
+                    <p><strong>Click the group title to change it.</strong></p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm btn-info" data-dismiss="modal">Ok</button>
