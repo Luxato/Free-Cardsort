@@ -231,6 +231,9 @@
 
                 // Accepting items from the trash.
                 $gallery.droppable({
+                    start: function() {
+                        console.log('test');
+                    },
                     greedy: true,
                     accept: "#trash li, .category li",
                     classes: {
@@ -244,8 +247,11 @@
                 // Image deletion function
                 /*var recycle_icon = "<a class='_tooltip' href='link/to/recycle/script/when/we/have/js/off' data-toggle=\"tooltip\" title=\"Undo\" title='Recycle this image'><i class='fa fa-undo' aria-hidden='true'></i></a>";*/
                 var recycle_icon = "";
+                function updateItems($container) {
 
+                }
                 function deleteImage2($item, $container) {
+                    console.log($container);
                     $('#aside').height(height);
                     if($('#guide').is(':visible')) {
                         $('#guide').hide();
@@ -273,7 +279,13 @@
                 var trash_icon = "<a href='link/to/trash/script/when/we/have/js/off' title='Delete this image' class='ui-icon ui-icon-trash'>Delete image</a>";
 
                 function recycleImage($item) {
-                    console.log($item);
+                    $container = $item.parent().parent();
+                    if ($("ul", $container).length) {
+                        $list = $("ul", $container);
+                        var tmp = $container.find('.counter').text().split(' ');
+                        tmp[0]--;
+                        $container.find('.counter').text(tmp[0] + ' Items');
+                    }
                     $item.fadeOut(function () {
                         $item.remove();
                         $gallery.prepend($item);
