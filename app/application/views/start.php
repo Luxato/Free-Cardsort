@@ -29,11 +29,11 @@
 <body>
 <div class="container">
     <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-        <?php if($lang === 'en'): ?>
-            <a href="<?= base_url() ?>dk"><img style="cursor: pointer;" src="<?= base_url() ?>assets/dk_22.png" data-toggle="tooltip" title="Switch to Danish" alt="Danish"></a>
-        <?php else: ?>
-            <a href="<?= base_url() ?>en"><img style="cursor: pointer;" src="<?= base_url() ?>assets/enus_22.png" data-toggle="tooltip" title="Switch to English" alt="English"></a>
-        <?php endif; ?>
+        <?php /*if($lang === 'en'): */?><!--
+            <a href="<?/*= base_url() */?>dk"><img style="cursor: pointer;" src="<?/*= base_url() */?>assets/dk_22.png" data-toggle="tooltip" title="Switch to Danish" alt="Danish"></a>
+        <?php /*else: */?>
+            <a href="<?/*= base_url() */?>en"><img style="cursor: pointer;" src="<?/*= base_url() */?>assets/enus_22.png" data-toggle="tooltip" title="Switch to English" alt="English"></a>
+        --><?php /*endif; */?>
         <div class="panel panel-info">
             <div class="panel-heading">
                 <div class="panel-title"><?= lang('questionair') ?></div>

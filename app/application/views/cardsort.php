@@ -394,7 +394,8 @@
                 for (index in data.cards) {
                     languages.push({
                         'en': data.cards[index].en,
-                        'dk': data.cards[index].dk
+                        'dk': data.cards[index].dk,
+                        'sk': data.cards[index].sk,
                     });
                     gallery.append('<li id="' + index + '" class="ui-widget-content ui-corner-tr">\n' +
                         '                        <h5 class="ui-widget-header"><i style="font-size: 11px; position: relative; top: -2px;" class="fa fa-arrows" aria-hidden="true"></i> ' + data.cards[index].en + '</h5>\n' +
