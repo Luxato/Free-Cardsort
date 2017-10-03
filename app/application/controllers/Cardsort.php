@@ -33,17 +33,11 @@ class Cardsort extends CI_Controller {
 	}
 
 	public function process_results() {
-		// TODO
-		// Save results to database
-		/*var_dump($this->input->post());
-		echo '<pre>';
-		print_r( $this->session->application_id );
-		echo '</pre>';
-		exit;*/
 		$this->db->set('data', $this->input->post('result'));
 		$this->db->set('end_timestamp', time());
-		$this->db->where('id', $this->session->application_id);
-		$this->db->insert('applicants');
+		$this->db->set('language', $this->input->post('cardLang'));
+		$this->db->where('id', $this->session->applicant_id);
+		$this->db->update('applicants');
 
 		$this->session->unset_userdata( 'username' );
 		$this->session->unset_userdata( 'applicant_id' );

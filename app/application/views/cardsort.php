@@ -206,9 +206,10 @@
         $(function () {
             function reload() {
                 var oriVal;
+                $(".category").off();
                 $(".category").on('click', 'h4', function () {
                     // If this is placeholder
-                    if(!$(this).parent().hasClass('.legit-cat')) {
+                    if(!$(this).parent().hasClass('legit-cat')) {
                         return;
                     }
                     if ($(this).text() == '') return;
@@ -431,6 +432,7 @@
                         class="btn btn-md btn-success"><i class="fa fa-paper-plane-o" aria-hidden="true"></i> Send
                     results
                 </button>
+                <input id="cardLang" name="cardLang" type="hidden" value="">
                 <input id="data" name="result" type="hidden" value="">
             </form>
         </div><!--/.nav-collapse -->
@@ -531,9 +533,11 @@
     $(function () {
         tooltip();
         var tmp = 0;
+        $('#cardLang').val('en');
         $('.lang').on('click', function () {
             var elements = $('#gallery').find('li');
             lang = $(this).attr('id');
+            $('#cardLang').val(lang);
             for (var i = 0, max = elements.length; i < max; i++) {
                 var id = $(elements[i]).attr('id');
                 $(elements[i]).find('h5').html('<i style="font-size: 11px; position: relative; top: -2px;" class="fa fa-arrows" aria-hidden="true"></i> ' + languages[id][lang]);
