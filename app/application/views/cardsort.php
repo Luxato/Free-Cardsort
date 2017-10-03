@@ -208,7 +208,9 @@
                 var oriVal;
                 $(".category").on('click', 'h4', function () {
                     // If this is placeholder
-
+                    if(!$(this).parent().hasClass('.legit-cat')) {
+                        return;
+                    }
                     if ($(this).text() == '') return;
                     oriVal = $(this).html();
                     $(this).html("");
@@ -377,7 +379,7 @@
                 // Create new placeholder
                 $('#main').append('<div class="col-md-4">\n' +
                     '                    <div style="margin:10px 0;border-radius: 4px; border: 1px solid #b7c6c9;" class="category create-new ui-widget-content ui-state-default">\n' +
-                    '                        <h4 style="margin: 0; border: 0; padding-right: 7px;" class="ui-widget-header">Click to rename</h4>\n' +
+                    '                        <h4 style="font-size:17px;margin: 0; border: 0; padding-right: 7px;" class="ui-widget-header">Drag items inside this box</h4>\n' +
                     ' <div style="height: 100px;line-height: 20px;padding-top: 27px;color: gray;font-size: 12px; text-align: center;"> ' +
                     '                            <div class="temporary"><i class="fa fa-arrows" aria-hidden="true"></i></div>\n' +
                     '                            Drag items here to create new group</div>\n' +
@@ -466,8 +468,7 @@
                 <div class="col-md-4">
                     <div style="margin:10px 0;border-radius:4px;border: 1px solid #c0c0c0; opacity: 0.8;"
                          class="category create-new ui-widget-content ui-state-default">
-                        <h4 style="margin: 0; border: 0; padding-right: 7px;" class="ui-widget-header">Click to
-                            rename</h4>
+                        <h4 style="font-size:17px;margin: 0; border: 0; padding-right: 7px;" class="ui-widget-header">Drag items inside this box</h4>
                         <div style="height: 100px;line-height: 20px;padding-top: 27px;color: gray;font-size: 12px; text-align: center;">
                             <div class="temporary"><i class="fa fa-arrows" aria-hidden="true"></i></div>
                             Drag items here to create new group
