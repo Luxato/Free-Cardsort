@@ -9,9 +9,10 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500" rel="stylesheet">
     <style>
-        html,body,.container {
-            height:100% !important;
+        html, body, .container {
+            height: 100% !important;
         }
+
         .legit-cat h5.ui-widget-header {
             background: #fff;
             color: #000;
@@ -21,9 +22,11 @@
             background: #A7B2B6;
             padding: 10px;
         }
-        .legit-cat.ui-state-highlight .ui-helper-reset{
+
+        .legit-cat.ui-state-highlight .ui-helper-reset {
             background: #ffeacd !important;
         }
+
         .ui-helper-reset {
             padding: 3px 3px 0 3px;
             display: inline-block;
@@ -46,10 +49,12 @@
         .col-md-4 {
             font-family: 'Montserrat', sans-serif;
         }
+
         .fa-undo {
             position: relative;
             left: -3px;
         }
+
         .legit-cat h4.ui-widget-header {
             font-size: 1em;
             font-weight: 500;
@@ -160,6 +165,7 @@
         .ui-state-highlight {
             background: #ffeacd !important;
         }
+
         h4.ui-widget-header {
             cursor: pointer;
         }
@@ -172,12 +178,13 @@
         function tooltip() {
             $('[data-toggle="tooltip"]').tooltip();
         }
+
         var height;
         $(function () {
             function reload() {
                 var oriVal;
                 $(".category").on('click', 'h4', function () {
-                    if  ($(this).text() == '') return;
+                    if ($(this).text() == '') return;
                     oriVal = $(this).html();
                     $(this).html("");
                     $("<input style='width: 100%;color: gray;' type='text'>")
@@ -187,7 +194,7 @@
                         .on('blur keyup', function (e) {
                             if (e.type == 'blur' || e.keyCode == '13') {
                                 var $this = $(this);
-                                if  ($this.val()) {
+                                if ($this.val()) {
                                     $this.parent().html($this.val() + '<i style="color: #89949b; margin-right: 5px;" class="fa fa-times pull-right" aria-hidden="true"></i>');
                                 } else {
                                     $this.parent().html(oriVal);
@@ -231,9 +238,6 @@
 
                 // Accepting items from the trash.
                 $gallery.droppable({
-                    start: function() {
-                        console.log('test');
-                    },
                     greedy: true,
                     accept: "#trash li, .category li",
                     classes: {
@@ -247,16 +251,26 @@
                 // Image deletion function
                 /*var recycle_icon = "<a class='_tooltip' href='link/to/recycle/script/when/we/have/js/off' data-toggle=\"tooltip\" title=\"Undo\" title='Recycle this image'><i class='fa fa-undo' aria-hidden='true'></i></a>";*/
                 var recycle_icon = "";
+
                 function updateItems($container) {
 
                 }
+
                 function deleteImage2($item, $container) {
-                    console.log($container);
                     $('#aside').height(height);
-                    if($('#guide').is(':visible')) {
+                    if ($('#guide').is(':visible')) {
                         $('#guide').hide();
                         $('#guide2').show();
                     }
+                    console.log($item.parent());
+                    $previous_container = $item.parent().parent();
+                    if ($("ul", $previous_container).length) {
+                        $list = $("ul", $previous_container);
+                        var tmp = $previous_container.find('.counter').text().split(' ');
+                        tmp[0]--;
+                        $previous_container.find('.counter').text(tmp[0] + ' Items');
+                    }
+
                     $item.fadeOut(function () {
                         if ($("ul", $container).length) {
                             $list = $("ul", $container);
@@ -425,7 +439,8 @@
                          style="float: right;margin-bottom: 25px;display: none;margin-left:15px;color:#4B555B;background: #E3EFF8; border: 2px solid #90BFE5; border-radius: 4px;"
                          class="col-md-4">
                         <h3>Step 3</h3>
-                        <p>If you already know what you'd like to call this group, click the title to rename it now. If not, you can do this later.</p>
+                        <p>If you already know what you'd like to call this group, click the title to rename it now. If
+                            not, you can do this later.</p>
                         <h3>Step 4</h3>
                         <p>When you're done, click "Finished" (top right).</p>
                     </div>
@@ -447,7 +462,7 @@
             </div>
             <div class="modal-body">
                 <p><strong>You must sort all the cards and name all the groups before you can finish.</strong></p>
-                    <p><strong>Click the group title to change it.</strong></p>
+                <p><strong>Click the group title to change it.</strong></p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm btn-info" data-dismiss="modal">Ok</button>
@@ -496,7 +511,7 @@
         });
         $('#submit').on('submit', function (e) {
             if ($('#gallery li').length > 0) {
-            e.preventDefault();
+                e.preventDefault();
                 $('#submitModal').modal('show');
             }
         });
