@@ -441,9 +441,17 @@
         <div class="row">
             <div id="aside" class="col-md-3"
                  style="padding-top:13px;word-wrap: break-word;border-right: 1px dashed lightgray; background: #A7B2B6;">
-                <img id="changeLang" style="position: relative;left: -3px; cursor: pointer;" class="pull-right"
-                     src="<?= base_url() ?>assets/dk_22.png" data-placement="bottom" data-toggle="tooltip"
-                     title="Switch to Danish" alt="Danish">
+                <div class="pull-right">
+                    <img class="lang" id="en" style="position: relative;left: -3px; cursor: pointer;"
+                         src="<?= base_url() ?>assets/enus_22.png" data-placement="bottom" data-toggle="tooltip"
+                         title="Switch to English" alt="Danish">
+                    <img class="lang" id="dk" style="position: relative;left: -3px; cursor: pointer;"
+                         src="<?= base_url() ?>assets/dk_22.png" data-placement="top" data-toggle="tooltip"
+                         title="Switch to Danish" alt="Danish">
+                    <img class="lang" id="sk" style="position: relative;left: -3px; cursor: pointer;"
+                         src="<?= base_url() ?>assets/sk_22.png" data-placement="bottom" data-toggle="tooltip"
+                         title="Switch to Slovak" alt="Slovak">
+                </div>
                 <ul id="gallery" class="gallery ui-helper-reset ui-helper-clearfix">
                 </ul>
             </div>
@@ -522,19 +530,9 @@
     $(function () {
         tooltip();
         var tmp = 0;
-        $('#changeLang').on('click', function () {
+        $('.lang').on('click', function () {
             var elements = $('#gallery').find('li');
-            if (tmp % 2 == 0) {
-                lang = 'dk';
-                $(this).attr('src', '<?= base_url() ?>assets/enus_22.png');
-                $(this).attr('original-title', 'Switch to English');
-                $(this).attr('data-original-title', 'Switch to English');
-            } else {
-                lang = 'en';
-                $(this).attr('src', '<?= base_url() ?>assets/dk_22.png');
-                $(this).attr('original-title', 'Switch to Danish');
-                $(this).attr('data-original-title', 'Switch to Danish');
-            }
+            lang = $(this).attr('id');
             for (var i = 0, max = elements.length; i < max; i++) {
                 var id = $(elements[i]).attr('id');
                 $(elements[i]).find('h5').html('<i style="font-size: 11px; position: relative; top: -2px;" class="fa fa-arrows" aria-hidden="true"></i> ' + languages[id][lang]);
