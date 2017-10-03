@@ -275,7 +275,7 @@
                                 reload();
                             });
                         }
-                        $removeButton.parent().fadeOut(function () {
+                        $removeButton.parent().parent().fadeOut(function () {
                             $(this).remove();
                         });
                     }
