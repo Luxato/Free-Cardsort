@@ -178,12 +178,37 @@
         function tooltip() {
             $('[data-toggle="tooltip"]').tooltip();
         }
+        function update_results() {
+            var categories = $('.legit-cat');
+            var result = {};
+            var forgot_to_rename = false;
+            for (var i = 0, max = categories.length; i < max; i++) {
+                var catName = $(categories[i]).find('h4.ui-widget-header').text();
+                var cards = $(categories[i]).find('li');
+                var json = [];
+                for (var j = 0; j < cards.length; j++) {
+                    json.push($(cards[j]).attr('id'));
+                }
+                if(result.hasOwnProperty(catName)) {
+                    forgot_to_rename = true;
+                }
+                result[catName] = json;
+            }
+            $('#data').val(JSON.stringify(result));
+            if(forgot_to_rename) {
+                return true;
+            } else {
+                return false;
+            }
+        }
 
         var height;
         $(function () {
             function reload() {
                 var oriVal;
                 $(".category").on('click', 'h4', function () {
+                    // If this is placeholder
+
                     if ($(this).text() == '') return;
                     oriVal = $(this).html();
                     $(this).html("");
@@ -195,7 +220,7 @@
                             if (e.type == 'blur' || e.keyCode == '13') {
                                 var $this = $(this);
                                 if ($this.val()) {
-                                    $this.parent().html($this.val() + '<i style="color: #89949b; margin-right: 5px;" class="fa fa-times pull-right" aria-hidden="true"></i>');
+                                    $this.parent().html($this.val());
                                 } else {
                                     $this.parent().html(oriVal);
                                 }
@@ -338,6 +363,7 @@
                     }
                     return false;
                 });
+                /*update_results();*/
             }
 
             function change_to_normal_state($item) {
@@ -347,10 +373,7 @@
                 title.css('opacity', '1');
                 $item.parent().find('.temporary').parent().remove();
                 $item.parent().find('.counter').show();
-                $item.parent().find('h4').replaceWith('<h4 style="line-height: 39px; margin: 0; border: 0; padding-right: 7px;" class="ui-widget-header">Click to rename</h4><span style="display: inline-block;\n' +
-                    '    position: absolute;\n' +
-                    '    right: 20px;\n' +
-                    '    top: 17px;cursor:pointer;" class="remove"><i style="color: #89949b; margin-right: 5px;" class="fa fa-times pull-right" aria-hidden="true"></i></span>');
+                $item.parent().find('h4').replaceWith('<h4 style="line-height: 39px; margin: 0; border: 0; padding-right: 7px;" class="ui-widget-header">Click to rename</h4><span style="display: inline-block;position: absolute;right: 20px;top: 17px;cursor:pointer;" class="remove"><i style="color: #89949b; margin-right: 5px;" class="fa fa-times pull-right" aria-hidden="true"></i></span>');
                 // Create new placeholder
                 $('#main').append('<div class="col-md-4">\n' +
                     '                    <div style="margin:10px 0;border-radius: 4px; border: 1px solid #b7c6c9;" class="category create-new ui-widget-content ui-state-default">\n' +
@@ -405,6 +428,7 @@
                         class="btn btn-md btn-success"><i class="fa fa-paper-plane-o" aria-hidden="true"></i> Send
                     results
                 </button>
+                <input id="data" name="result" type="hidden" value="">
             </form>
         </div><!--/.nav-collapse -->
     </div>
@@ -480,9 +504,8 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title"></h4>
             </div>
-            <div class="modal-body">
-                <p><strong>You must sort all the cards and name all the groups before you can finish.</strong></p>
-                <p><strong>Click the group title to change it.</strong></p>
+            <div id="changable" class="modal-body">
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm btn-info" data-dismiss="modal">Ok</button>
@@ -526,8 +549,16 @@
             tmp++;
         });
         $('#submit').on('submit', function (e) {
+            if (update_results()) {
+                e.preventDefault();
+                $('#changable').html('<p><strong>You forgot to name all the groups.</strong></p>\n' +
+                    '                <p><strong>Click the group title to change it.</strong></p>');
+                $('#submitModal').modal('show');
+            }
             if ($('#gallery li').length > 0) {
                 e.preventDefault();
+                $('#changable').html('<p><strong>You must sort all the cards and name all the groups before you can finish.</strong></p>\n' +
+                    '                <p><strong>Click the group title to change it.</strong></p>');
                 $('#submitModal').modal('show');
             }
         });
