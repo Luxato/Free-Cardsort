@@ -235,6 +235,24 @@
 
                     }
                 });
+                $('.remove').off();
+                $('.remove').on('click', function () {
+                    $removeButton = $(this);
+                    if(confirm('Are you sure you want to remove this group?')) {
+                        var elements = $removeButton.parent().find('li');
+                        for (var i = 0; i < elements.length; i++) {
+                            $(elements[i]).fadeOut(function () {
+                                $(this).remove();
+                                $gallery.prepend($(this));
+                                $(this).fadeIn();
+                                reload();
+                            });
+                        }
+                        $removeButton.parent().fadeOut(function () {
+                            $(this).remove();
+                        });
+                    }
+                });
 
                 // Accepting items from the trash.
                 $gallery.droppable({
@@ -262,7 +280,6 @@
                         $('#guide').hide();
                         $('#guide2').show();
                     }
-                    console.log($item.parent());
                     $previous_container = $item.parent().parent();
                     if ($("ul", $previous_container).length) {
                         $list = $("ul", $previous_container);
@@ -330,7 +347,10 @@
                 title.css('opacity', '1');
                 $item.parent().find('.temporary').parent().remove();
                 $item.parent().find('.counter').show();
-                $item.parent().find('h4').replaceWith('<h4 style="line-height: 39px; margin: 0; border: 0; padding-right: 7px;" class="ui-widget-header">Click to rename <i style="color: #89949b; margin-right: 5px;" class="fa fa-times pull-right" aria-hidden="true"></i></h4>');
+                $item.parent().find('h4').replaceWith('<h4 style="line-height: 39px; margin: 0; border: 0; padding-right: 7px;" class="ui-widget-header">Click to rename</h4><span style="display: inline-block;\n' +
+                    '    position: absolute;\n' +
+                    '    right: 20px;\n' +
+                    '    top: 17px;cursor:pointer;" class="remove"><i style="color: #89949b; margin-right: 5px;" class="fa fa-times pull-right" aria-hidden="true"></i></span>');
                 // Create new placeholder
                 $('#main').append('<div class="col-md-4">\n' +
                     '                    <div style="margin:10px 0;border-radius: 4px; border: 1px solid #b7c6c9;" class="category create-new ui-widget-content ui-state-default">\n' +
@@ -496,13 +516,9 @@
                 $(elements[i]).find('h5').html('<i style="font-size: 11px; position: relative; top: -2px;" class="fa fa-arrows" aria-hidden="true"></i> ' + languages[id][lang]);
             }
             var elements = $('ul.gallery.ui-helper-reset');
-            //console.log('elements length je ' + elements.length);
-            //console.log($(elements[1].children[0]).attr('id'));
             for (i = 0; i < elements.length; i++) {
                 if (i == 0) continue;
-                //console.log('icko je ' + i);
                 for (var l = 0, max = elements[i].children.length; l < max; l++) {
-                    //console.log(elements[i].children.length);
                     var id = $(elements[i].children[l]).attr('id');
                     $(elements[i].children[l]).find('h5').html('<i style="font-size: 11px; position: relative; top: -2px;" class="fa fa-arrows" aria-hidden="true"></i> ' + languages[id][lang]);
                 }
