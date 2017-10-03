@@ -212,7 +212,6 @@
                     if(!$(this).parent().hasClass('legit-cat')) {
                         return;
                     }
-                    if ($(this).text() == '') return;
                     oriVal = $(this).html();
                     $(this).html("");
                     $("<input style='width: 100%;color: gray;' type='text'>")
@@ -222,7 +221,10 @@
                         .on('blur keyup', function (e) {
                             if (e.type == 'blur' || e.keyCode == '13') {
                                 var $this = $(this);
-                                if ($this.val()) {
+                                var tmp = $this.val().replace(/\s\s+/g, ' ');
+                                if  (tmp == ' ') {
+                                    $this.parent().html(oriVal);
+                                } else if ($this.val()) {
                                     $this.parent().html($this.val());
                                 } else {
                                     $this.parent().html(oriVal);
