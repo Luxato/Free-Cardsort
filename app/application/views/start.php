@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Enter survey</title>
-    <link rel="stylesheet" href="https://bootswatch.com/flatly/bootstrap.min.css">
+    <link rel="stylesheet" href="<?= base_url() ?>/assets/bootstrap.css">
     <link rel="stylesheet" href="http://parsleyjs.org/src/parsley.css">
     <script
             src="https://code.jquery.com/jquery-2.2.4.min.js"
