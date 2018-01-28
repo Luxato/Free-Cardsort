@@ -1,9 +1,12 @@
-# Preview
-Preview is available here http://cardsort.nabytky.sk/
+# Live Preview
+Live preview is available here http://cardsort.srv91.stranovsky.cloud/
+
 ![alt tag](http://showcase.stranovsky.sk/github/freecardsort.jpg)
 
 # What is cardsort?
 Card sorting is a technique in user experience design in which a person tests a group of subject experts or users to generate a dendrogram (category tree) or folksonomy. It is a useful approach for designing information architecture, workflows, menu structure, or web site navigation paths.
+
+More information can be seen in the paper http://cardsort.srv91.stranovsky.cloud/20171746_Lukas_Stranovsky.pdf
 
 # Server requirements
 PHP 7
@@ -40,7 +43,7 @@ CREATE TABLE `applicants` (
 ```
 
 3. Rename config/database.sample.php to config/database.php and fill data to database.
-4. Write your own card in cards.js
+4. Write your own cards in cards.js
 
 
 # TODO
